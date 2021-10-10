@@ -22,8 +22,23 @@
     const db = getDatabase();
     const dbRef = query(ref(db, '/sensors/CO2/'), limitToLast(1));
 
-    let spanValor = document.getElementById('valor');
+    let spanNivel = document.getElementById('nivel-monoxido');
+    let pStatus = document.getElementById('status-monoxido');
     let imgLoading = document.getElementById('loading');
+
+    let divSinalAmarelo = document.getElementById('sinal-amarelo');
+    let divSinalVerde = document.getElementById('sinal-verde');
+    let divSinalVermelho = document.getElementById('sinal-vermelho');
+
+    let cores = {
+        'amarelo_escuro': '#404000',
+        'verde_escuro': '#004000',
+        'vermelho_escuro': '#400000',
+        'amarelo': 'yellow',
+        'verde': '#00FF00',
+        'vermelho': 'red'
+
+    };
 
     onValue(dbRef, (snapshot) => {
         imgLoading.style = "display: none";
@@ -32,6 +47,43 @@
             const childData = childSnapshot.val();
             console.log("Key: " + childKey);
             console.log("Value: " + childData.value);
-            spanValor.innerText = childData.value;
+            exibeNiveisMonoxidoCarbono(childKey, childData);
         });
     });
+
+    function acionaSinalAmarelo(msg){ 
+        divSinalAmarelo.style = 'background-color: ' + cores['amarelo'];
+        pStatus.innerText = msg;
+    }
+
+    function acionaSinalVerde(msg){
+        divSinalVerde.style = 'background-color: ' + cores['verde'];
+        pStatus.innerText = msg;
+    }
+
+    function acionaSinalVermelho(msg){
+        divSinalVermelho.style = 'background-color: ' + cores['vermelho'];
+        pStatus.innerText = msg;
+    }
+
+    function apagaTodosSinais(){
+        divSinalAmarelo.style = 'background-color: ' + cores['amarelo_escuro'];
+        divSinalVerde.style = 'background-color: ' + cores['verde_escuro'];
+        divSinalVermelho.style = 'background-color: ' + cores['vermelho_escuro'];
+    }
+
+    function exibeNiveisMonoxidoCarbono(key, data) {
+        apagaTodosSinais();
+        let ppm = data.value;
+        spanNivel.innerText = ppm;
+
+        if (ppm < 15){
+            acionaSinalVerde("Normal");
+        } else if (ppm <= 30){
+            acionaSinalAmarelo("Inaquada");
+        } else if (ppm <= 40) {
+            acionaSinalVermelho("Péssima");
+        } else {
+            acionaSinalVermelho("Crítica");
+        }
+    }
