@@ -80,10 +80,10 @@
         if (ppm < 15){
             acionaSinalVerde("Normal");
         } else if (ppm <= 30){
-            acionaSinalAmarelo("Inaquada");
+            acionaSinalAmarelo("Situação Inadequada");
         } else if (ppm <= 40) {
-            acionaSinalVermelho("Péssima");
+            acionaSinalVermelho("Situação Péssima");
         } else {
-            acionaSinalVermelho("Crítica");
+            acionaSinalVermelho("Situação Crítica");
         }
     }
