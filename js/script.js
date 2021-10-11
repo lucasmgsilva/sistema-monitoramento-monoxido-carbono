@@ -20,7 +20,7 @@
     import { getDatabase, ref, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
 
     const db = getDatabase();
-    const dbRef = query(ref(db, '/sensors/CO2/'), limitToLast(1));
+    const dbRef = query(ref(db, '/sensors/monoxido-carbono/'), limitToLast(1));
 
     let spanNivel = document.getElementById('nivel-monoxido');
     let pStatus = document.getElementById('status-monoxido');
